@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import Link from 'next/link';
-import { ArrowRightIcon, ClockIcon, CpuChipIcon, GlobeAltIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
+import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export default function HomePage() {
   return (
@@ -10,7 +10,7 @@ export default function HomePage() {
   <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
     <div className="mx-auto max-w-2xl text-center">
       <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-        LuminFlight<sup className="text-xs">®</sup> ile
+        LuminFlight ile
         <span className="block bg-gradient-to-r from-yellow-400 to-amber-500 bg-clip-text text-transparent mt-3">
           Uçuş Deneyiminizi Yeniden Keşfedin
         </span>
@@ -22,7 +22,7 @@ export default function HomePage() {
 
       <div className="mt-10 flex justify-center gap-x-6">
         <Link
-          href="/login"
+          href="/auth/login"
           className="group flex items-center rounded-full bg-white/10 px-8 py-4 text-white 
                    shadow-sm hover:bg-white/20 transition-all duration-300 ring-1 ring-white/20 
                    hover:ring-white/40"
