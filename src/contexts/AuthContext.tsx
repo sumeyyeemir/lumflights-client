@@ -1,34 +1,38 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { apiService } from '@/services/api';
+
+type User = {
+  role: 'admin' | 'staff';
+  email: string;
+} | null;
 
 type AuthContextType = {
-  user: User | null;
-  loading: boolean;
+  user: User;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => void;
 };
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  loading: true
-});
+const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<User>(null);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
-    });
+  const login = async (email: string, password: string) => {
+    const { data } = await apiService.auth.login({ email, password });
+    console.log("login",data);
+    localStorage.setItem('authToken', data.token);
+    setUser({ role: data.role, email });
+  };
 
-    return () => unsubscribe();
-  }, []);
+  const logout = () => {
+    localStorage.removeItem('authToken');
+    setUser(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

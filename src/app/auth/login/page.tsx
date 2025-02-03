@@ -44,9 +44,15 @@ export default function LoginPage() {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      
+      const token = await userCredential.user.getIdToken();
+      localStorage.setItem('authToken', token);
+      
+      const role = 'staff';
+
       toast.success('Giriş başarılı! Yönlendiriliyorsunuz...');
-      router.push('/app/dashboard');
+      router.push(userCredential.user.uid === 'ADMIN_UID' ? '/admin/dashboard' : '/dashboard');
     } catch (error: any) {
       toast.error(hataMesaji(error.code));
     } finally {
@@ -60,6 +66,10 @@ export default function LoginPage() {
         return 'Geçersiz kimlik bilgileri';
       case 'auth/too-many-requests':
         return 'Çok fazla deneme yaptınız. Lütfen daha sonra tekrar deneyin';
+      case 'auth/user-not-found':
+        return 'Kullanıcı bulunamadı';
+      case 'auth/wrong-password':
+        return 'Yanlış şifre';
       default:
         return 'Giriş sırasında bir hata oluştu';
     }
