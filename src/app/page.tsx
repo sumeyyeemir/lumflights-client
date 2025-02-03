@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import Link from 'next/link';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
