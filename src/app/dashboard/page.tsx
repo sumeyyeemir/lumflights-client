@@ -1,4 +1,4 @@
-'use client'; // Bu satırı en üste ekleyin
+'use client';
 
 import { useState, useEffect } from 'react';
 import { apiService, Reservation } from '@/services/api';
